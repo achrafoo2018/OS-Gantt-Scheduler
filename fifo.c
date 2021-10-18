@@ -40,11 +40,14 @@ void fifo(char config[]){
          }
       }
    }
-   int start = atoi(tab[0][1]), finish = atoi(tab[0][1]);
+   int ta = atoi(tab[0][1]), te;
+   int start = ta, finish = ta;
    for(int i=0; i < 3; i++){
-      int idle = (finish < atoi(tab[i][1])) ? (atoi(tab[i][1]) - finish) : 0;
+      ta = atoi(tab[i][1]);
+      te = atoi(tab[i][2]);
+      int idle = (finish < ta) ? (ta - finish) : 0;
       start = finish + idle;
-      finish += atoi(tab[i][2]) + idle;
+      finish += te + idle;
       printf("%s %d-->%d\n", tab[i][0], start, finish);
    }
 
