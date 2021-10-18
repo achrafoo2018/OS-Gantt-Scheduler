@@ -17,16 +17,17 @@ void fifo(char config[]){
    while ((read = getline(&line, &len, fp)) != -1) {
       if(line[0] == '#'){
          printf("Commentaire : %s", line);
-      }else{
-         char *token = strtok(line, ":");
-         int j=0;
-         while(token != NULL){
-            tab[i][j] = strdup(token);
-            token = strtok(NULL, ":");
-            j++;
-         }
-         i++;
+         continue;
       }
+      char *token = strtok(line, ":");
+      int j=0;
+      while(token != NULL){
+         tab[i][j] = strdup(token);
+         token = strtok(NULL, ":");
+         j++;
+      }
+      i++;
+      
    }
    fclose(fp);
    for(int i=0; i < 3; i++){ // sorting array based on TA
