@@ -51,11 +51,11 @@ void fifo(char config[]){
       finish += te + idle;
       printf("%s %d-->%d\n", tab[i][0], start, finish);
    }
+   printf("\n");
 
 }  
 
 int main(int argc, char *argv[]) {
-   // printf() displays the string inside quotation
    if(argc == 1)
       printf("Usage: %s <config>\n", argv[0]);
    else{
