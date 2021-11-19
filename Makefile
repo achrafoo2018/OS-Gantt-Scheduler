@@ -7,4 +7,5 @@ main: main.c
 	gcc main.c -o main
 
 $(BUILD_DIR)/%: $(SRC_DIR)/%.c
+	@mkdir -p $(@D)
 	gcc $< -o $@
