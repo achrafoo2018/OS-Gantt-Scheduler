@@ -3,7 +3,8 @@
 #include <string.h>
 #include <stdlib.h>
 
-const char ALGORITHMS_FOLDER[] = "./algorithms/exec/";
+const char ALGORITHMS_FOLDER[] = "./algorithms/build/";
+
 struct algorithm{
     int n;
     char name[500];
@@ -15,7 +16,6 @@ int main(int argc, char *argv[]){
         printf("Usage: %s <config>\n", argv[0]);
         exit(1);
     }
-
     DIR *algorithms;
     struct dirent *dir;
     algorithms = opendir(ALGORITHMS_FOLDER);
