@@ -8,7 +8,7 @@ struct node {
    struct node *next;
 };
 
-/* Function to bubble sort the given linked list */
+/* Function to bubble sort the given linked list based on an index to compare with*/
 void bubbleSort(struct node *start, int comparisonIndex, bool isDesc);
   
 /* Function to swap data of two nodes a and b*/
