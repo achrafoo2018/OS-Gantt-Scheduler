@@ -4,7 +4,7 @@
 
 void priority(char config[]){
    FILE *fp;
-   fp = fopen(("./%s", config), "r");
+   fp = fopen(config, "r");
    if(fp == NULL) {
       perror("Unable to open file!");
       exit(1);   
@@ -44,7 +44,7 @@ void priority(char config[]){
 
 int t_a = atoi(tab[0][1]), t_e;
    for(int k=0; k < 3; k++){ 
-      int start = t_a, finish = t_a;
+      int finish = t_a;
       t_a = atoi(tab[k][1]);
       t_e = atoi(tab[k][2]);
       int idle = (finish < t_a) ? (t_a - finish) : 0;

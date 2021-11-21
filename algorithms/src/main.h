@@ -23,6 +23,12 @@ struct node *getProcessesListFromFile(char *configFile);
 /* function to remove white spaces from string */
 char *remove_white_spaces(char *str);
 
+/* Function to sort by TA and TE */
+void sortByTaTe(struct node *start, int comparisonIndex1, int comparisonIndex2);
+
+/* Function to sort by TE */
+void sortByTe(struct node *head, int comparisonIndex1, int comparisonIndex2);
+
 
 struct node* inverseLinkedList(struct node *node){
    if(node->next == NULL)
@@ -111,4 +117,65 @@ struct node *getProcessesListFromFile(char *configFile){
    fclose(fp);
    processesLinkedList = inverseLinkedList(processesLinkedList);
    return processesLinkedList;
+}
+
+void displayResult(struct node *head){
+   int ta = atoi(head->data[1]), te;
+   int start = ta, finish = ta;
+   while(head){
+      ta = atoi(head->data[1]);
+      te = atoi(head->data[2]);
+      int idle = (finish < ta) ? (ta - finish) : 0;
+      start = finish + idle;
+      finish += te + idle;
+      printf("%s %d-->%d\n", head->data[0], start, finish);
+      head = head->next;
+   }
+}
+void sortByTaTe(struct node *start, int comparisonIndex1, int comparisonIndex2){
+   int swapped;
+   struct node *ptr1;
+   struct node *lptr = NULL;
+   /* Checking for empty list */
+   if (start == NULL)
+      return;
+   do{
+      swapped = 0;
+      ptr1 = start;
+      while (ptr1->next != lptr){
+         int ta1 = atoi(ptr1->data[comparisonIndex1]);
+         int ta2 = atoi(ptr1->next->data[comparisonIndex1]);
+         int te1 = atoi(ptr1->data[comparisonIndex2]);
+         int te2 = atoi(ptr1->next->data[comparisonIndex2]);
+         if (ta1 > ta2 || (ta1 == ta2 && te1 > te2)){ 
+               swap(ptr1, ptr1->next);
+               swapped = 1;
+         }
+         ptr1 = ptr1->next;
+      }
+      lptr = ptr1;
+   }while (swapped);
+}
+
+void sortByTe(struct node *head, int comparisonIndex1, int comparisonIndex2){
+   int t_a, t_e;
+   while(head){ 
+      int finish = atoi(head->data[comparisonIndex1]) + atoi(head->data[2]);
+      struct node *head2 = head->next;
+      while(head2 && head2->next){
+         if((atoi(head2->data[comparisonIndex1]) <= finish && atoi(head2->next->data[comparisonIndex1]) <= finish) && (atoi(head2->data[comparisonIndex2]) > atoi(head2->next->data[comparisonIndex2]))){
+            for (int i = 0; i < 4; i++){
+               char *t = head2->next->data[i];
+               head2->next->data[i] = head2->data[i];
+               head2->data[i] = t;
+            }
+         }
+         t_a = atoi(head2->data[comparisonIndex1]);
+         t_e = atoi(head2->data[comparisonIndex2]);
+         int idle = (finish < t_a) ? (t_a - finish) : 0;
+         finish += t_e + idle;
+         head2 = head2->next;
+      }
+      head = head->next;
+   }
 }
