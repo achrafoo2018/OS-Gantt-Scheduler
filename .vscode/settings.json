@@ -3,5 +3,6 @@
         "string.h": "c",
         "typeinfo": "c",
         "stdlib.h": "c"
-    }
+    },
+    "C_Cpp.errorSquiggles": "Disabled"
 }
