@@ -24,10 +24,10 @@ struct node *getProcessesListFromFile(char *configFile);
 char *remove_white_spaces(char *str);
 
 /* Function to sort by TA and TE */
-void sortByTaTe(struct node *start, int comparisonIndex1, int comparisonIndex2);
+void bubbleSortByTwoIndexes(struct node *start, int comparisonIndex1, int comparisonIndex2);
 
 /* Function to sort by TE */
-void sortByTe(struct node *head, int comparisonIndex1, int comparisonIndex2);
+void sortByTwoIndexes(struct node *head, int comparisonIndex1, int comparisonIndex2);
 
 
 struct node* inverseLinkedList(struct node *node){
@@ -132,7 +132,7 @@ void displayResult(struct node *head){
       head = head->next;
    }
 }
-void sortByTaTe(struct node *start, int comparisonIndex1, int comparisonIndex2){
+void bubbleSortByTwoIndexes(struct node *start, int comparisonIndex1, int comparisonIndex2){
    int swapped;
    struct node *ptr1;
    struct node *lptr = NULL;
@@ -157,13 +157,15 @@ void sortByTaTe(struct node *start, int comparisonIndex1, int comparisonIndex2){
    }while (swapped);
 }
 
-void sortByTe(struct node *head, int comparisonIndex1, int comparisonIndex2){
+void sortByTwoIndexes(struct node *head, int comparisonIndex1, int comparisonIndex2){
    int t_a, t_e;
    while(head){ 
       int finish = atoi(head->data[comparisonIndex1]) + atoi(head->data[2]);
       struct node *head2 = head->next;
       while(head2 && head2->next){
-         if((atoi(head2->data[comparisonIndex1]) <= finish && atoi(head2->next->data[comparisonIndex1]) <= finish) && (atoi(head2->data[comparisonIndex2]) > atoi(head2->next->data[comparisonIndex2]))){
+         if((atoi(head2->data[comparisonIndex1]) <= finish &&
+            atoi(head2->next->data[comparisonIndex1]) <= finish) &&
+            atoi(head2->data[comparisonIndex2]) > atoi(head2->next->data[comparisonIndex2])){
             for (int i = 0; i < 4; i++){
                char *t = head2->next->data[i];
                head2->next->data[i] = head2->data[i];
