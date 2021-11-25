@@ -1,8 +1,7 @@
 
 #include "main.h"  
 
-
-void sjf(char configFile[]){
+void SRT(char configFile[]){
    struct node *processesList = getProcessesListFromFile(configFile);
    bubbleSortByTwoIndexes(processesList, 1, 2); // Sort List by Ta & Te to get First process to run
    struct node *tmp = processesList;
@@ -16,6 +15,6 @@ int main(int argc, char *argv[]) {
    if(argc == 1)
       printf("Usage: %s <config>\n", argv[0]);
    else
-      sjf(argv[1]);
+      SRT(argv[1]);
    return 0;
 }
