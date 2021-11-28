@@ -54,18 +54,15 @@ void printProcessTable(struct node *head){
 
 
 void printGanttChart(struct node *head){
-   printf("\nPress enter to show Gant Chart\n");
-   char enter = 0;
-   while (enter != '\r' && enter != '\n') { enter = getchar(); }
    printf("\n******************* Gant Chart *************************\n\n");
    struct node *tmp = head;
-   printf(" ");
+   printf(" +");
    while(tmp){
       for(int j=0; j <= atoi(tmp->data[2]); j++) printf("--");
-      printf(" ");
+      printf("+");
       tmp = tmp->next;
    }
-   printf("\n|");
+   printf("\n |");
    tmp = head;
    // printing process id in the middle
    while(tmp) {
@@ -75,15 +72,15 @@ void printGanttChart(struct node *head){
       printf("|");
       tmp = tmp->next;
    }
-   printf("\n ");
+   printf("\n +");
    tmp = head;
    // printing bottom bar
    while(tmp){
       for(int j=0; j <= atoi(tmp->data[2]); j++) printf("--");
-      printf(" ");
+      printf("+");
       tmp = tmp->next;
    }
-   printf("\n");
+   printf("\n ");
    tmp = head;
    // printing the time line
    printf("%s", head->data[1]);
