@@ -79,6 +79,7 @@ int getUserChoice(int nbOfAlgorithms){
     return choice;
 }
 
+
 int main(int argc, char *argv[]){
     if(argc == 1){
         printf("Usage: %s <config>\n", argv[0]);
