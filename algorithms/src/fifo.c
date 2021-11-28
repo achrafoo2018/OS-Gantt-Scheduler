@@ -4,6 +4,7 @@ void fifo(char *configFile){
    struct node *processesList = getProcessesListFromFile(configFile);
    printProcessTable(processesList);
    bubbleSort(processesList, 1, false); // Asc Sort List Based On TA 
+   addIdleNodes(processesList);
    printGanttChart(processesList);
 }  
 

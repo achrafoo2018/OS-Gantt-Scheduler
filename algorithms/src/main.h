@@ -35,18 +35,20 @@ void printGanttChart(struct node *head);
 /* Function to print Table of processes */
 void printProcessTable(struct node *head);
 
+/* Function to add Idle nodes to print them in gantt diagram */
+void addIdleNodes(struct node *head);
 
 void printProcessTable(struct node *head){ 
-   printf("\n******************* Processes Table *********************\n\n");
+   printf("\n******************** Processes Table *********************\n\n");
    struct node *tmp = head;
-   puts("+---------+---------------+----------------+-----------+");
-   puts("|   PID   | Arrival Time  | Execution Time | Priority  |");
-   puts("+---------+---------------+----------------+-----------+");
+   puts(" +---------+---------------+----------------+-----------+");
+   puts(" |   PID   | Arrival Time  | Execution Time | Priority  |");
+   puts(" +---------+---------------+----------------+-----------+");
 
    while(tmp){
-      printf("|  %4s   |      %2s       |       %2s       |    %2s     |\n"
+      printf(" |  %4s   |      %2s       |       %2s       |    %2s     |\n"
             , tmp->data[0], tmp->data[1], tmp->data[2], tmp->data[3] );
-      puts("+---------+---------------+----------------+-----------+");
+      puts(" +---------+---------------+----------------+-----------+");
       tmp = tmp->next;
    }
  
@@ -54,7 +56,7 @@ void printProcessTable(struct node *head){
 
 
 void printGanttChart(struct node *head){
-   printf("\n******************* Gant Chart *************************\n\n");
+   printf("\n******************** Gant Chart *************************\n\n");
    struct node *tmp = head;
    printf(" +");
    while(tmp){
@@ -66,8 +68,8 @@ void printGanttChart(struct node *head){
    tmp = head;
    // printing process id in the middle
    while(tmp) {
-      for(int j=0; j < atoi(tmp->data[2]); j++) printf(" ");
-      printf("%2s", tmp->data[0]);
+      for(int j=0; j < atoi(tmp->data[2]) - 1; j++) printf(" ");
+      printf("%3s", tmp->data[0]);
       for(int j=0; j < atoi(tmp->data[2]); j++) printf(" ");
       printf("|");
       tmp = tmp->next;
@@ -98,6 +100,29 @@ void printGanttChart(struct node *head){
    }
    printf("\n\n\n");
 
+}
+
+
+void addIdleNodes(struct node *head){
+   struct node *tmp = head->next, *prev = head;
+   int finish = atoi(head->data[1]) + atoi(head->data[2]);
+   while(tmp && tmp->next){
+      int ta = atoi(tmp->data[1]);
+      int te = atoi(tmp->data[2]);
+      int idle = (ta > finish) ? (ta - finish) : 0;
+      if(idle > 0){
+         struct node *newNode = (struct node*)malloc(sizeof(struct node));
+         newNode->data[0] = "-";
+         sprintf(newNode->data[1], "%d", finish);
+         sprintf(newNode->data[2], "%d", idle);
+         newNode->data[3] = "0";
+         newNode->next = prev->next;
+         prev->next = newNode;
+      }
+      finish += te + idle;
+      tmp = tmp->next;
+      prev = prev->next;
+   }
 }
 
 
@@ -203,11 +228,11 @@ void bubbleSortByTwoIndexes(struct node *start, int comparisonIndex1, int compar
       swapped = 0;
       ptr1 = start;
       while (ptr1->next != lptr){
-         int ta1 = atoi(ptr1->data[comparisonIndex1]);
-         int ta2 = atoi(ptr1->next->data[comparisonIndex1]);
-         int te1 = atoi(ptr1->data[comparisonIndex2]);
-         int te2 = atoi(ptr1->next->data[comparisonIndex2]);
-         if (ta1 > ta2 || (ta1 == ta2 && te1 > te2)){ 
+         int i1 = atoi(ptr1->data[comparisonIndex1]);
+         int ni1 = atoi(ptr1->next->data[comparisonIndex1]);
+         int i2 = atoi(ptr1->data[comparisonIndex2]);
+         int ni2 = atoi(ptr1->next->data[comparisonIndex2]);
+         if (i1 > ni1 || (i1 == ni1 && i2 > ni2)){ 
                swap(ptr1, ptr1->next);
                swapped = 1;
          }
@@ -217,28 +242,28 @@ void bubbleSortByTwoIndexes(struct node *start, int comparisonIndex1, int compar
    }while (swapped);
 }
 
+
 void sortByTwoIndexes(struct node *head, int comparisonIndex1, int comparisonIndex2){
-   int t_a, t_e;
-   struct node *tmp = head;
-   while(tmp){ 
-      int finish = atoi(tmp->data[1]) + atoi(tmp->data[2]);
-      struct node *head2 = tmp->next;
-      while(head2 && head2->next){
-         if((atoi(head2->data[comparisonIndex1]) <= finish &&
-            atoi(head2->next->data[comparisonIndex1]) <= finish) &&
-            atoi(head2->data[comparisonIndex2]) > atoi(head2->next->data[comparisonIndex2])){
-            for (int i = 0; i < 4; i++){
-               char *t = head2->next->data[i];
-               head2->next->data[i] = head2->data[i];
-               head2->data[i] = t;
-            }
+   struct node *lptr = NULL;
+   bool swapped;
+   do{
+      swapped = false;
+      int finish = atoi(head->data[1]) + atoi(head->data[2]);
+      struct node *ptr1 = head->next;
+      while(ptr1->next != lptr){
+         int ni1 = atoi(ptr1->next->data[comparisonIndex1]);
+         int i2 = atoi(ptr1->data[comparisonIndex2]);
+         int ni2 = atoi(ptr1->next->data[comparisonIndex2]);
+         if(ni1 <= finish && i2 > ni2 ){
+            swap(ptr1, ptr1->next);
+            swapped = true;
          }
-         t_a = atoi(head2->data[1]);
-         t_e = atoi(head2->data[2]);
-         int idle = (finish < t_a) ? (t_a - finish) : 0;
-         finish += t_e + idle;
-         head2 = head2->next;
+         int ta = atoi(ptr1->data[1]);
+         int te = atoi(ptr1->data[2]);
+         int idle = (finish < ta) ? (ta - finish) : 0;
+         finish += te + idle;
+         ptr1 = ptr1->next;
       }
-      tmp = tmp->next;
-   }
+      lptr = ptr1;
+   }while(swapped);
 }
