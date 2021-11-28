@@ -29,6 +29,80 @@ void bubbleSortByTwoIndexes(struct node *start, int comparisonIndex1, int compar
 /* Function to sort by TE */
 void sortByTwoIndexes(struct node *head, int comparisonIndex1, int comparisonIndex2);
 
+/* Function to print Gantt chart */
+void printGanttChart(struct node *head);
+
+/* Function to print Table of processes */
+void printProcessTable(struct node *head);
+
+
+void printProcessTable(struct node *head){ 
+   printf("\n******************* Processes Table *********************\n\n");
+   struct node *tmp = head;
+   puts("+---------+---------------+----------------+-----------+");
+   puts("|   PID   | Arrival Time  | Execution Time | Priority  |");
+   puts("+---------+---------------+----------------+-----------+");
+
+   while(tmp){
+      printf("|  %4s   |      %2s       |       %2s       |    %2s     |\n"
+            , tmp->data[0], tmp->data[1], tmp->data[2], tmp->data[3] );
+      puts("+---------+---------------+----------------+-----------+");
+      tmp = tmp->next;
+   }
+ 
+}
+
+
+void printGanttChart(struct node *head){
+   printf("\nPress enter to show Gant Chart\n");
+   char enter = 0;
+   while (enter != '\r' && enter != '\n') { enter = getchar(); }
+   printf("\n******************* Gant Chart *************************\n\n");
+   struct node *tmp = head;
+   printf(" ");
+   while(tmp){
+      for(int j=0; j <= atoi(tmp->data[2]); j++) printf("--");
+      printf(" ");
+      tmp = tmp->next;
+   }
+   printf("\n|");
+   tmp = head;
+   // printing process id in the middle
+   while(tmp) {
+      for(int j=0; j < atoi(tmp->data[2]); j++) printf(" ");
+      printf("%2s", tmp->data[0]);
+      for(int j=0; j < atoi(tmp->data[2]); j++) printf(" ");
+      printf("|");
+      tmp = tmp->next;
+   }
+   printf("\n ");
+   tmp = head;
+   // printing bottom bar
+   while(tmp){
+      for(int j=0; j <= atoi(tmp->data[2]); j++) printf("--");
+      printf(" ");
+      tmp = tmp->next;
+   }
+   printf("\n");
+   tmp = head;
+   // printing the time line
+   printf("%s", head->data[1]);
+   int ta = atoi(head->data[1]), te;
+   int finish = ta;
+   while(tmp){
+      for(int j=0; j <= atoi(tmp->data[2]); j++) printf("  ");
+      ta = atoi(tmp->data[1]);
+      te = atoi(tmp->data[2]);
+      int idle = (finish < ta) ? (ta - finish) : 0;
+      finish += te + idle;
+      if(finish > 9) printf("\b"); // backspace : remove 1 space
+      printf("%d", finish);
+      tmp = tmp->next;
+   }
+   printf("\n\n\n");
+
+}
+
 
 struct node* inverseLinkedList(struct node *node){
    if(node->next == NULL)
@@ -107,6 +181,7 @@ struct node *getProcessesListFromFile(char *configFile){
       char *token = strtok(line, ":");
       int i=0;
       while(token != NULL){
+         token[strcspn(token, "\n")] = 0; // deleting \n from token
          newNode->data[i] = strdup(token);
          token = strtok(NULL, ":");
          i++;
@@ -119,19 +194,7 @@ struct node *getProcessesListFromFile(char *configFile){
    return processesLinkedList;
 }
 
-void displayResult(struct node *head){
-   int ta = atoi(head->data[1]), te;
-   int start = ta, finish = ta;
-   while(head){
-      ta = atoi(head->data[1]);
-      te = atoi(head->data[2]);
-      int idle = (finish < ta) ? (ta - finish) : 0;
-      start = finish + idle;
-      finish += te + idle;
-      printf("%s %d-->%d\n", head->data[0], start, finish);
-      head = head->next;
-   }
-}
+
 void bubbleSortByTwoIndexes(struct node *start, int comparisonIndex1, int comparisonIndex2){
    int swapped;
    struct node *ptr1;
@@ -159,9 +222,10 @@ void bubbleSortByTwoIndexes(struct node *start, int comparisonIndex1, int compar
 
 void sortByTwoIndexes(struct node *head, int comparisonIndex1, int comparisonIndex2){
    int t_a, t_e;
-   while(head){ 
-      int finish = atoi(head->data[comparisonIndex1]) + atoi(head->data[2]);
-      struct node *head2 = head->next;
+   struct node *tmp = head;
+   while(tmp){ 
+      int finish = atoi(tmp->data[1]) + atoi(tmp->data[2]);
+      struct node *head2 = tmp->next;
       while(head2 && head2->next){
          if((atoi(head2->data[comparisonIndex1]) <= finish &&
             atoi(head2->next->data[comparisonIndex1]) <= finish) &&
@@ -172,12 +236,12 @@ void sortByTwoIndexes(struct node *head, int comparisonIndex1, int comparisonInd
                head2->data[i] = t;
             }
          }
-         t_a = atoi(head2->data[comparisonIndex1]);
-         t_e = atoi(head2->data[comparisonIndex2]);
+         t_a = atoi(head2->data[1]);
+         t_e = atoi(head2->data[2]);
          int idle = (finish < t_a) ? (t_a - finish) : 0;
          finish += t_e + idle;
          head2 = head2->next;
       }
-      head = head->next;
+      tmp = tmp->next;
    }
 }
