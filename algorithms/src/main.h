@@ -30,7 +30,7 @@ void bubbleSortByTwoIndexes(struct node *start, int comparisonIndex1, int compar
 void sortByTwoIndexes(struct node *head, int comparisonIndex1, int comparisonIndex2);
 
 /* Function to print Gantt chart */
-void printGanttChart(struct node *head);
+void printGanttChart(struct node *head, char *algorithmName);
 
 /* Function to print Table of processes */
 void printProcessTable(struct node *head);
@@ -55,8 +55,8 @@ void printProcessTable(struct node *head){
 }
 
 
-void printGanttChart(struct node *head){
-   printf("\n******************** Gant Chart *************************\n\n");
+void printGanttChart(struct node *head, char *algorithmName){
+   printf("\n******************** %s Gant Chart ***********************\n\n", algorithmName);
    struct node *tmp = head;
    printf(" +");
    while(tmp){
@@ -98,8 +98,8 @@ void printGanttChart(struct node *head){
       printf("%d", finish);
       tmp = tmp->next;
    }
-   printf("\n\n\n");
-
+   printf("\n");
+   printf("\n***********************************************************\n\n");
 }
 
 

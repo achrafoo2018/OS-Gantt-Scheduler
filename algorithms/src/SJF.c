@@ -8,7 +8,7 @@ void sjf(char configFile[]){
    bubbleSortByTwoIndexes(processesList, 1, 2); // Sort List by Ta & Te to get First process to run
    sortByTwoIndexes(processesList, 1, 2);
    addIdleNodes(processesList);
-   printGanttChart(processesList);
+   printGanttChart(processesList, "SJF");
 }
 
 

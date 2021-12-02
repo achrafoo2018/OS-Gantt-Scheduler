@@ -5,7 +5,7 @@ void fifo(char *configFile){
    printProcessTable(processesList);
    bubbleSort(processesList, 1, false); // Asc Sort List Based On TA 
    addIdleNodes(processesList);
-   printGanttChart(processesList);
+   printGanttChart(processesList, "FIFO");
 }  
 
 int main(int argc, char *argv[]) {
