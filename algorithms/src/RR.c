@@ -1,19 +1,23 @@
 #include "main.h"
 
-void priority(char configFile[]){
+
+void RR(char configFile[],int q){
    struct node *processesList = getProcessesListFromFile(configFile);
-  // bubbleSortByTaPriority(processesList, 1, 3); // Sort List by Ta & Priority to get First process to run
+   bubbleSort(processesList, 1, false); // Asc Sort List Based On TA (which is on index 1 in DATA array)
    //struct node *tmp = processesList;
-   //sortByTaPriority(tmp, 1, 3);
+   //sortByTaPreemptive(tmp, 1, 2,q);
    //tmp = processesList;
    //displayResult(tmp);
 }  
 
 int main(int argc, char *argv[]) {
+    int Q;
    if(argc == 1)
       printf("Usage: %s <config>\n", argv[0]);
    else{
-      priority(argv[1]);
+      printf("Enter a Quantum : ");
+      scanf("%d",&Q);
+      RR(argv[1],Q);
    }
    return 0;
 }
