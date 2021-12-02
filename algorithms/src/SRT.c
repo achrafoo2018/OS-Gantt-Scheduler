@@ -3,11 +3,10 @@
 
 void SRT(char configFile[]){
    struct node *processesList = getProcessesListFromFile(configFile);
+   printProcessTable(processesList);
    bubbleSortByTwoIndexes(processesList, 1, 2); // Sort List by Ta & Te to get First process to run
-   struct node *tmp = processesList;
-   sortByTwoIndexes(tmp, 1, 2);
-   tmp = processesList;
-   displayResult(tmp);
+   sortByTwoIndexes(processesList, 1, 2);
+   printGanttChart(processesList);
 }
 
 

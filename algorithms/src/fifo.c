@@ -2,9 +2,10 @@
 
 void fifo(char *configFile){
    struct node *processesList = getProcessesListFromFile(configFile);
-   bubbleSort(processesList, 1, false); // Asc Sort List Based On TA (which is on index 1 in DATA array)
-   struct node *tmp = processesList;
-   displayResult(tmp);
+   printProcessTable(processesList);
+   bubbleSort(processesList, 1, false); // Asc Sort List Based On TA 
+   addIdleNodes(processesList);
+   printGanttChart(processesList);
 }  
 
 int main(int argc, char *argv[]) {
