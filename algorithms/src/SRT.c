@@ -6,7 +6,7 @@ void SRT(char configFile[]){
    printProcessTable(processesList);
    bubbleSortByTwoIndexes(processesList, 1, 2); // Sort List by Ta & Te to get First process to run
    sortByTwoIndexes(processesList, 1, 2);
-   printGanttChart(processesList);
+   printGanttChart(processesList, "SRT");
 }
 
 
