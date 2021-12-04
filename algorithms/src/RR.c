@@ -4,6 +4,8 @@
 void RR(char configFile[],int q){
    struct node *processesList = getProcessesListFromFile(configFile);
    bubbleSort(processesList, 1, false); // Asc Sort List Based On TA (which is on index 1 in DATA array)
+   struct Queue *queue = createQueueFromLinkedList(processesList);
+   
    //struct node *tmp = processesList;
    //sortByTaPreemptive(tmp, 1, 2,q);
    //tmp = processesList;

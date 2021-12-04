@@ -7,6 +7,13 @@ struct node {
    char *data[4]; // [Process_Name, TA, TE, Priority]
    struct node *next;
 };
+ 
+// The queue, front stores the front node of LL and rear stores the
+// last node of LL
+struct Queue {
+   struct node *front, *rear;
+};
+ 
 
 /* Function to bubble sort the given linked list based on an index to compare with*/
 void bubbleSort(struct node *start, int comparisonIndex, bool isDesc);
@@ -24,10 +31,10 @@ struct node *getProcessesListFromFile(char *configFile);
 char *remove_white_spaces(char *str);
 
 /* Function to sort by TA and TE */
-void bubbleSortByTwoIndexes(struct node *start, int comparisonIndex1, int comparisonIndex2);
+void bubbleSortByTwoIndexes(struct node *start, int comparisonIndex1, int comparisonIndex2, bool Desc);
 
 /* Function to sort by TE */
-void sortByTwoIndexes(struct node *head, int comparisonIndex1, int comparisonIndex2);
+void sortByTwoIndexes(struct node *head, int comparisonIndex1, int comparisonIndex2, bool Desc);
 
 /* Function to print Gantt chart */
 void printGanttChart(struct node *head, char *algorithmName);
@@ -217,7 +224,7 @@ struct node *getProcessesListFromFile(char *configFile){
 }
 
 
-void bubbleSortByTwoIndexes(struct node *start, int comparisonIndex1, int comparisonIndex2){
+void bubbleSortByTwoIndexes(struct node *start, int comparisonIndex1, int comparisonIndex2, bool Desc){
    int swapped;
    struct node *ptr1;
    struct node *lptr = NULL;
@@ -232,7 +239,8 @@ void bubbleSortByTwoIndexes(struct node *start, int comparisonIndex1, int compar
          int ni1 = atoi(ptr1->next->data[comparisonIndex1]);
          int i2 = atoi(ptr1->data[comparisonIndex2]);
          int ni2 = atoi(ptr1->next->data[comparisonIndex2]);
-         if (i1 > ni1 || (i1 == ni1 && i2 > ni2)){ 
+         bool condition = Desc ? i2 < ni2 : i2 > ni2;
+         if (i1 > ni1 || (i1 == ni1 && condition)){ 
                swap(ptr1, ptr1->next);
                swapped = 1;
          }
@@ -243,7 +251,7 @@ void bubbleSortByTwoIndexes(struct node *start, int comparisonIndex1, int compar
 }
 
 
-void sortByTwoIndexes(struct node *head, int comparisonIndex1, int comparisonIndex2){
+void sortByTwoIndexes(struct node *head, int comparisonIndex1, int comparisonIndex2, bool Desc){
    struct node *lptr = NULL;
    bool swapped;
    do{
@@ -254,7 +262,8 @@ void sortByTwoIndexes(struct node *head, int comparisonIndex1, int comparisonInd
          int ni1 = atoi(ptr1->next->data[comparisonIndex1]);
          int i2 = atoi(ptr1->data[comparisonIndex2]);
          int ni2 = atoi(ptr1->next->data[comparisonIndex2]);
-         if(ni1 <= finish && i2 > ni2 ){
+         bool condition = Desc ? i2 < ni2 : i2 > ni2;
+         if(ni1 <= finish && condition){
             swap(ptr1, ptr1->next);
             swapped = true;
          }
@@ -266,4 +275,125 @@ void sortByTwoIndexes(struct node *head, int comparisonIndex1, int comparisonInd
       }
       lptr = ptr1;
    }while(swapped);
+}
+
+
+struct Queue *createQueueFromLinkedList(struct node *head){
+   struct node *tmp = head;
+   struct Queue *queue = createQueue();
+   while(tmp){
+      enQueue(queue, tmp);
+      tmp = tmp->next;
+   }
+   return queue;
+}
+
+// A utility function to create a new linked list node.
+struct node* newNode(struct node *dataNode){
+    struct node* temp = (struct node*)malloc(sizeof(struct node));
+    temp->data[0] = dataNode->data[0];
+    temp->data[1] = dataNode->data[1];
+    temp->data[2] = dataNode->data[2];
+    temp->data[3] = dataNode->data[3];
+    temp->next = NULL;
+    return temp;
+} 
+ 
+// A utility function to create an empty queue
+struct Queue* createQueue(){
+    struct Queue* q = (struct Queue*)malloc(sizeof(struct Queue));
+    q->front = q->rear = NULL;
+    return q;
+}
+
+
+// The function to add a key k to q
+void enQueue(struct Queue* q, int k){
+    // Create a new LL node
+    struct node* temp = newNode(k);
+    // If queue is empty, then new node is front and rear both
+    if (q->rear == NULL) {
+        q->front = q->rear = temp;
+        return;
+    }
+ 
+    // Add the new node at the end of queue and change rear
+    q->rear->next = temp;
+    q->rear = temp;
+}
+ 
+// Function to remove a key from given queue q
+void deQueue(struct Queue* q){
+   // If queue is empty, return NULL.
+   if (q->front == NULL)
+      return;
+   // Store previous front and move front one node ahead
+   struct node* temp = q->front;
+   struct node *ret = q->front;
+   q->front = q->front->next;
+
+   // If front becomes NULL, then change rear also as NULL
+   if (q->front == NULL)
+      q->rear = NULL;
+   return temp;
+}
+
+
+struct node *sortByTaPreemptive(struct Queue *queue, int quantum){
+   struct node *Res = NULL;
+   while(queue){
+      struct node *process = (struct node*)malloc(sizeof(struct node));
+      strcpy(process->data[0], queue->front->data[0]);
+      strcpy(process->data[1], queue->front->data[1]);
+      strcpy(process->data[2], queue->front->data[2]);
+      strcpy(process->data[3], queue->front->data[3]);
+      deQueue(queue);
+      struct node *newNode = (struct node*)malloc(sizeof(struct node));
+      if(atoi(process->data[2]) > quantum){
+         sprintf(newNode->data[1], "%d", finish);
+         sprintf(newNode->data[2], "%d", quantum);
+         process->data[2] -= quantum;
+         process->data[1] = finish;
+      }else{
+
+      }
+      while(finish <= queue->front->data[1] && ){
+
+      }
+
+   }
+   // linked list to save the first process w nhot el ta w Q feha el if
+   // insertFin(Res,head->data); 
+
+   // while(head){ 
+   //    int finish;
+   //    if(atoi(head->data[2]) < quantum)
+   //       finish = atoi(head->data[comparisonIndex1]) + atoi(head->data[comparisonIndex2]);
+   //    else
+      
+   //       finish = atoi(head->data[comparisonIndex1]) + quantum;
+      
+   //    //insert head in file
+   //    enfiler(f,head->data);
+   //    struct node *head2 = head->next;
+   //    //delete head in file
+   //    defiler(f,head->data);
+   //    while(head2){
+   //       if(atoi(head2->data[comparisonIndex1]) <= finish )  
+   //       {          
+   //       //insert head2 in file 
+   //       enfiler(f,head2->data);
+   //       }        
+   //       head2 = head2->next;
+   //    }
+   //    // insert head in file
+   //    enfiler(f,head->data);
+   //    //ken te wfe ena7ih ml file
+      
+   //    //aka linked list nsavi feha e theny eli howa awel element f file ndefilih w aprés naawed n'emplih ken mazel makamalesh e te
+   //    insertFin(Res,f->tete->data);
+
+   //    head = head->next;
+   // }
+   return Res;
 }

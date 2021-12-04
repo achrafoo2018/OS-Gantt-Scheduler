@@ -47,7 +47,6 @@ struct algorithm *getListOfSchedulingAlgorithms(int numberOfAlgorithms){
             printf("\t%d - %s\n", i, dir->d_name); // printing the menu
             i++;
         }
-        printf("\t%d - Exit\n", numberOfAlgorithms+1);
         closedir(algorithms);
     }
     return algorithmChoices;
@@ -88,15 +87,12 @@ int main(int argc, char *argv[]){
     }
     DIR *algorithmsFiles = opendir(ALGORITHMS_FOLDER); // pointer to count nb of files
     int nbOfAlgorithms = getNumberOfAlgorithms(algorithmsFiles);
-    int choice = nbOfAlgorithms + 1;
     struct algorithm *algorithmChoices = getListOfSchedulingAlgorithms(nbOfAlgorithms);
-    do{
-        choice = getUserChoice(nbOfAlgorithms);
-        char command[500] = "";
-        strcat(command, algorithmChoices[choice].location);
-        char configFile[100] = " ";
-        strcat(configFile, argv[1]);
-        strcat(command, configFile);
-        system(command);
-    }while(choice != nbOfAlgorithms + 1); // while not exit
+    int choice = getUserChoice(nbOfAlgorithms);
+    char command[500] = "";
+    strcat(command, algorithmChoices[choice].location);
+    char configFile[100] = " ";
+    strcat(configFile, argv[1]);
+    strcat(command, configFile);
+    system(command);
 }
