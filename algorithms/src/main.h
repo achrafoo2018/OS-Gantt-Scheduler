@@ -505,12 +505,8 @@ struct node *sortByTaPreemptive(struct Queue *queue, int quantum){
          else{
             tmp->next = Node;
             tmp=tmp->next;
-         }
-
-         // printf("***** queue *****");
-         // affiche(queue);
-         // affiche1(Res);
-    
+         }    
+         finish += atoi(process->data[2]);
       }else{
             Node=newNode(process);
             sprintf(Node->data[2],"%d",quantum);
