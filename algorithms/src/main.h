@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>  
+#include <sys/ioctl.h>
+#include <unistd.h>
 
 struct node {
    char *data[4]; // [Process_Name, TA, TE, Priority]
@@ -36,6 +38,9 @@ void bubbleSortByTwoIndexes(struct node *start, int comparisonIndex1, int compar
 /* Function to sort by TE */
 void sortByTwoIndexes(struct node *head, int comparisonIndex1, int comparisonIndex2, bool Desc);
 
+/* Function that returns minimum of a & b */
+int min(int a, int b);
+
 /* Function to print Gantt chart */
 void printGanttChart(struct node *head, char *algorithmName);
 
@@ -45,6 +50,21 @@ void printProcessTable(struct node *head);
 /* Function to add Idle nodes to print them in gantt diagram */
 void addIdleNodes(struct node *head);
 
+/* Function to create an empty Queue */
+struct Queue* createQueue();
+
+/* The function to add an element to queue q */
+void enQueue(struct Queue* q, struct node *element);
+
+/* Function to remove element from given queue q */
+void deQueue(struct Queue* q);
+
+/* Function to create Queue from LinkedList */
+struct Queue *createQueueFromLinkedList(struct node *head);
+
+/* Function to create a new linked list node */
+struct node* newNode(struct node *dataNode);
+
 void printProcessTable(struct node *head){ 
    printf("\n******************** Processes Table *********************\n\n");
    struct node *tmp = head;
@@ -53,7 +73,7 @@ void printProcessTable(struct node *head){
    puts(" +---------+---------------+----------------+-----------+");
 
    while(tmp){
-      printf(" |  %4s   |      %2s       |       %2s       |    %2s     |\n"
+      printf(" |  %4s   |   %4s        |    %4s        | %4s      |\n"
             , tmp->data[0], tmp->data[1], tmp->data[2], tmp->data[3] );
       puts(" +---------+---------------+----------------+-----------+");
       tmp = tmp->next;
@@ -64,61 +84,91 @@ void printProcessTable(struct node *head){
 
 void printGanttChart(struct node *head, char *algorithmName){
    printf("\n******************** %s Gant Chart ***********************\n\n", algorithmName);
-   struct node *tmp = head;
-   printf(" +");
-   while(tmp){
-      for(int j=0; j <= atoi(tmp->data[2]); j++) printf("--");
-      printf("+");
-      tmp = tmp->next;
+   struct node *tmp1, *tmp2, *tmp3, *tmp4;
+   tmp1 = tmp2 = tmp3 = tmp4 = head;
+   struct winsize terminalSize;
+   ioctl(STDOUT_FILENO, TIOCGWINSZ, &terminalSize);
+   int finish; // used to count nb of col in Gantt diagram
+   int finish2 = atoi(head->data[1]); // to print under each prcoess
+   while(tmp1){
+      printf(" +");
+      finish = 1; // reset finish 
+      while(tmp1){
+         if(finish > 1 && finish + atoi(tmp1->data[2])*2 + 4 > terminalSize.ws_col)
+            break;
+         for(int j=0; j <= min(atoi(tmp1->data[2]), (terminalSize.ws_col/2) - 5); ++j)
+            printf("--");
+         printf("+");
+         finish += atoi(tmp1->data[2])*2 + 4;
+         tmp1 = tmp1->next;
+      }
+      printf("\n |");
+      finish = 1;
+      // printing process id in the middle
+      while(tmp2) {
+         if(finish > 1 && finish + atoi(tmp2->data[2])*2 + 4 >= terminalSize.ws_col)
+            break;
+         for(int j=0; j < min(atoi(tmp2->data[2]) - 1, (terminalSize.ws_col / 2) - 5); ++j) printf(" ");
+         printf("%3s", tmp2->data[0]);
+         for(int j=0; j < min(atoi(tmp2->data[2]), (terminalSize.ws_col / 2) - 6); ++j) printf(" ");
+         printf("|");
+         finish += atoi(tmp2->data[2])*2 + 4;
+         tmp2 = tmp2->next;
+      }
+      printf("\n +");
+      finish = 1;
+      // printing bottom bar
+      while(tmp3){
+         if(finish > 1 && finish + atoi(tmp3->data[2])*2 + 4 > terminalSize.ws_col)
+            break;
+         for(int j=0; j <= min(atoi(tmp3->data[2]), (terminalSize.ws_col/2) - 5); ++j) printf("--");
+         printf("+");
+         finish += atoi(tmp3->data[2])*2 + 4;
+         tmp3 = tmp3->next;
+      }
+      printf("\n ");
+      // printing the time line
+      printf("%d", finish2);
+      finish = 1;
+      while(tmp4){
+         if(finish > 1 && finish + atoi(tmp4->data[2])*2 + 4 > terminalSize.ws_col)
+            break;
+         for(int j=0; j <= min(atoi(tmp4->data[2]), (terminalSize.ws_col/2) - 5); j++) printf("  ");
+         finish2 += atoi(tmp4->data[2]);
+         if(finish2 > 9){
+            int t = (finish2 + 1) / 10;
+            int i = 0;
+            do{ // backsapces for the number of digits of finish
+               t /= 10;
+               printf("\b"); // backspace : remove 1 space
+               ++i;
+            }while(t != 0);
+         }
+         printf("%d", finish2);
+         finish += atoi(tmp4->data[2])*2 + 4;
+         tmp4 = tmp4->next;
+      }
+      printf("\n\n");
    }
-   printf("\n |");
-   tmp = head;
-   // printing process id in the middle
-   while(tmp) {
-      for(int j=0; j < atoi(tmp->data[2]) - 1; j++) printf(" ");
-      printf("%3s", tmp->data[0]);
-      for(int j=0; j < atoi(tmp->data[2]); j++) printf(" ");
-      printf("|");
-      tmp = tmp->next;
-   }
-   printf("\n +");
-   tmp = head;
-   // printing bottom bar
-   while(tmp){
-      for(int j=0; j <= atoi(tmp->data[2]); j++) printf("--");
-      printf("+");
-      tmp = tmp->next;
-   }
-   printf("\n ");
-   tmp = head;
-   // printing the time line
-   printf("%s", head->data[1]);
-   int ta = atoi(head->data[1]), te;
-   int finish = ta;
-   while(tmp){
-      for(int j=0; j <= atoi(tmp->data[2]); j++) printf("  ");
-      ta = atoi(tmp->data[1]);
-      te = atoi(tmp->data[2]);
-      int idle = (finish < ta) ? (ta - finish) : 0;
-      finish += te + idle;
-      if(finish > 9) printf("\b"); // backspace : remove 1 space
-      printf("%d", finish);
-      tmp = tmp->next;
-   }
-   printf("\n");
-   printf("\n***********************************************************\n\n");
+   printf("***********************************************************\n\n");
+}
+
+int min(int a, int b){
+   return (a > b) ? b : a;
 }
 
 
 void addIdleNodes(struct node *head){
    struct node *tmp = head->next, *prev = head;
    int finish = atoi(head->data[1]) + atoi(head->data[2]);
-   while(tmp && tmp->next){
+   while(tmp){
       int ta = atoi(tmp->data[1]);
       int te = atoi(tmp->data[2]);
       int idle = (ta > finish) ? (ta - finish) : 0;
       if(idle > 0){
          struct node *newNode = (struct node*)malloc(sizeof(struct node));
+         for(int i=0; i<4; i++)
+            newNode->data[i] = (char *)malloc(sizeof(char) * 100);
          newNode->data[0] = "-";
          sprintf(newNode->data[1], "%d", finish);
          sprintf(newNode->data[2], "%d", idle);
@@ -170,9 +220,9 @@ void bubbleSort(struct node *start, int comparisonIndex, bool isDesc){
 /* function to swap data of two nodes a and b*/
 void swap(struct node *a, struct node *b){
    for(int i=0; i < 4; i++){
-      char *temp = a->data[i];
-      a->data[i] = b->data[i];
-      b->data[i] = temp;
+      char *temp = strdup(a->data[i]);
+      a->data[i] = strdup(b->data[i]);
+      b->data[i] = strdup(temp);
    }
 }
 
@@ -251,6 +301,53 @@ void bubbleSortByTwoIndexes(struct node *start, int comparisonIndex1, int compar
 }
 
 
+void insertInPosition(struct node *head, struct node *newNode, int finish){
+   struct node *tmp = head->next;
+   struct node *prev = head;
+   if(head == NULL){
+      head = newNode;
+      return;
+   }
+   while(tmp &&
+          atoi(newNode->data[2]) >= atoi(tmp->data[2]) &&
+          atoi(tmp->data[1]) <= finish){
+      prev = prev->next;
+      tmp = tmp->next;
+   }
+   newNode->next = tmp;
+   prev->next = newNode;
+}
+
+void SRTFPreemptive(struct node *head){
+   struct node *tmp = head;
+   int finish = atoi(tmp->data[1]);
+   while(tmp){
+      struct node *tmp2 = tmp->next;
+      while(tmp2){
+         int ta = atoi(tmp->data[1]);
+         int idle = ta > finish ? ta-finish : 0;
+         int diffta = atoi(tmp2->data[1]) - (finish+idle);
+         diffta = diffta < 0 ? 0 : diffta;
+         bool condition = atoi(tmp2->data[2]) < atoi(tmp->data[2])-diffta;
+         if(diffta == 0 && condition)
+            swap(tmp, tmp2);
+         else if(condition){
+            struct node *remainderNode = newNode(tmp);
+            sprintf(remainderNode->data[2], "%d", (atoi(tmp->data[2])-diffta));
+            sprintf(tmp->data[2], "%d", diffta);
+            swap(tmp->next, tmp2);
+            insertInPosition(tmp, remainderNode, finish+idle);
+            break;
+         }
+         tmp2 = tmp2->next;
+      }
+      int ta = atoi(tmp->data[1]);
+      int idle = ta > finish ? ta-finish : 0;
+      finish += atoi(tmp->data[2]) + idle;
+      tmp = tmp->next;
+   }
+}
+
 void sortByTwoIndexes(struct node *head, int comparisonIndex1, int comparisonIndex2, bool Desc){
    struct node *lptr = NULL;
    bool swapped;
@@ -291,16 +388,16 @@ struct Queue *createQueueFromLinkedList(struct node *head){
 // A utility function to create a new linked list node.
 struct node* newNode(struct node *dataNode){
     struct node* temp = (struct node*)malloc(sizeof(struct node));
-    temp->data[0] = dataNode->data[0];
-    temp->data[1] = dataNode->data[1];
-    temp->data[2] = dataNode->data[2];
-    temp->data[3] = dataNode->data[3];
+    temp->data[0] = strdup(dataNode->data[0]);
+    temp->data[1] = strdup(dataNode->data[1]);
+    temp->data[2] = strdup(dataNode->data[2]);
+    temp->data[3] = strdup(dataNode->data[3]);
     temp->next = NULL;
     return temp;
-} 
- 
+}
+
 // A utility function to create an empty queue
-struct Queue* createQueue(){
+struct Queue *createQueue(){
     struct Queue* q = (struct Queue*)malloc(sizeof(struct Queue));
     q->front = q->rear = NULL;
     return q;
@@ -308,60 +405,68 @@ struct Queue* createQueue(){
 
 
 // The function to add a key k to q
-void enQueue(struct Queue* q, int k){
-    // Create a new LL node
-    struct node* temp = newNode(k);
-    // If queue is empty, then new node is front and rear both
-    if (q->rear == NULL) {
-        q->front = q->rear = temp;
-        return;
-    }
- 
-    // Add the new node at the end of queue and change rear
-    q->rear->next = temp;
-    q->rear = temp;
+void enQueue(struct Queue* q, struct node *element){
+   // Create a new LL node
+   struct node *temp = newNode(element);
+   // If queue is empty, then new node is front and rear both
+   if (q->rear == NULL) {
+      q->front = q->rear = temp;
+      return;
+   }
+   if(atoi(q->rear->data[1]) <= atoi(element->data[1])){
+      q->rear->next = temp;
+      q->rear = temp;
+      return;
+   }
+   struct node *tmp = q->front->next, *prev = q->front;
+   while(tmp && atoi(tmp->data[1]) <= atoi(element->data[1])){
+      tmp = tmp->next;
+      prev = prev->next;
+   }
+   tmp->next = prev->next;
+   prev->next = tmp;   
+   
 }
- 
-// Function to remove a key from given queue q
+
 void deQueue(struct Queue* q){
    // If queue is empty, return NULL.
    if (q->front == NULL)
       return;
    // Store previous front and move front one node ahead
    struct node* temp = q->front;
-   struct node *ret = q->front;
+   //struct node *ret = q->front;
    q->front = q->front->next;
 
    // If front becomes NULL, then change rear also as NULL
    if (q->front == NULL)
       q->rear = NULL;
-   return temp;
+   free(temp);
 }
 
 
-struct node *sortByTaPreemptive(struct Queue *queue, int quantum){
-   struct node *Res = NULL;
-   while(queue){
-      struct node *process = (struct node*)malloc(sizeof(struct node));
-      strcpy(process->data[0], queue->front->data[0]);
-      strcpy(process->data[1], queue->front->data[1]);
-      strcpy(process->data[2], queue->front->data[2]);
-      strcpy(process->data[3], queue->front->data[3]);
-      deQueue(queue);
-      struct node *newNode = (struct node*)malloc(sizeof(struct node));
-      if(atoi(process->data[2]) > quantum){
-         sprintf(newNode->data[1], "%d", finish);
-         sprintf(newNode->data[2], "%d", quantum);
-         process->data[2] -= quantum;
-         process->data[1] = finish;
-      }else{
+// struct node *sortByTaPreemptive(struct Queue *queue, int quantum){
+   // struct node *Res = NULL;
+   // while(queue){
+   //    struct node *process = (struct node*)malloc(sizeof(struct node));
+   //    strcpy(process->data[0], queue->front->data[0]);
+   //    strcpy(process->data[1], queue->front->data[1]);
+   //    strcpy(process->data[2], queue->front->data[2]);
+   //    strcpy(process->data[3], queue->front->data[3]);
+   //    deQueue(queue);
+   //    struct node *newNode = (struct node*)malloc(sizeof(struct node));
+   //    if(atoi(process->data[2]) > quantum){
+   //       sprintf(newNode->data[1], "%d", finish);
+   //       sprintf(newNode->data[2], "%d", quantum);
+   //       process->data[2] -= quantum;
+   //       process->data[1] = finish;
+   //    }else{
 
-      }
-      while(finish <= queue->front->data[1] && ){
+   //    }
+   //    while(finish <= queue->front->data[1] && ){
 
-      }
+   //    }
 
-   }
+   // }
    // linked list to save the first process w nhot el ta w Q feha el if
    // insertFin(Res,head->data); 
 
@@ -395,5 +500,5 @@ struct node *sortByTaPreemptive(struct Queue *queue, int quantum){
 
    //    head = head->next;
    // }
-   return Res;
-}
+   // return Res;
+// }

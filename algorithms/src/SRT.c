@@ -5,7 +5,8 @@ void SRT(char configFile[]){
    struct node *processesList = getProcessesListFromFile(configFile);
    printProcessTable(processesList);
    bubbleSortByTwoIndexes(processesList, 1, 2, false); // Sort List by Ta & Te to get First process to run
-   sortByTwoIndexes(processesList, 1, 2, false);
+   SRTFPreemptive(processesList);
+   addIdleNodes(processesList);
    printGanttChart(processesList, "SRT");
 }
 
