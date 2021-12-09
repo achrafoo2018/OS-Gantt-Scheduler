@@ -67,8 +67,6 @@ struct Queue *createQueueFromLinkedList(struct node *head);
 /* Function to create a new linked list node */
 struct node* newNode(struct node *dataNode);
 
-/* The function to add an element to queue q */
-void enQueue1(struct Queue* q, struct node *element);
 
 void affiche1(struct node*res);
 
@@ -386,25 +384,11 @@ struct Queue *createQueueFromLinkedList(struct node *head){
    struct node *tmp = head;
    struct Queue *queue = createQueue();
    while(tmp){
-      enQueue1(queue, tmp);
+      enQueue(queue, tmp);
       tmp = tmp->next;
    }
    return queue;
 }
-
-// The function to add a key k to q
-void enQueue1(struct Queue *q, struct node *element){
-   // Create a new LL node
-   struct node *temp = newNode(element);
-   // If queue is empty, then new node is front and rear both
-   if (q->rear == NULL) {
-      q->front = q->rear = temp;
-      return;
-   }
-   q->rear->next = temp;
-   q->rear=temp;
-}
-
 
 
 // A utility function to create a new linked list node.
@@ -496,13 +480,11 @@ void affiche1(struct node*res){
 }
 
 struct node *sortByTaPreemptive(struct Queue *queue, int quantum){
-   
    struct node *Res = NULL;
    int finish=atoi(queue->front->data[1]),exec;
    struct node *tmp;
    struct node *frnt;
    struct node *process = (struct node*)malloc(sizeof(struct node));
-   struct node *Node;
    while(queue->front){
 
       process->data[0] = strdup(queue->front->data[0]);
@@ -511,8 +493,8 @@ struct node *sortByTaPreemptive(struct Queue *queue, int quantum){
       process->data[3] = strdup(queue->front->data[3]);
 
       frnt=deQueue(queue);
-     
-      Node = (struct node*)malloc(sizeof(struct node));
+   
+      struct node *Node = (struct node*)malloc(sizeof(struct node));
 
       if(atoi(process->data[2]) <= quantum){
          Node=newNode(process);
@@ -521,13 +503,13 @@ struct node *sortByTaPreemptive(struct Queue *queue, int quantum){
             tmp=Res;
          }
          else{
-         tmp->next = Node;
-         tmp=tmp->next;
+            tmp->next = Node;
+            tmp=tmp->next;
          }
 
-         printf("***** queue *****");
-         affiche(queue);
-         affiche1(Res);
+         // printf("***** queue *****");
+         // affiche(queue);
+         // affiche1(Res);
     
       }else{
             Node=newNode(process);
@@ -545,12 +527,12 @@ struct node *sortByTaPreemptive(struct Queue *queue, int quantum){
            
             exec= atoi(process->data[2]) - quantum;
             sprintf(process->data[2], "%d", exec); 
-            finish += atoi(process->data[1])+quantum;
+            finish += quantum;
             sprintf(process->data[1], "%d", finish);
 
             enQueue(queue,process);
-            affiche(queue);
-            affiche1(Res);
+            // affiche(queue);
+            // affiche1(Res);
       }
       
       queue->front=frnt;
