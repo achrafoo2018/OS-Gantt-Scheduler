@@ -3,24 +3,13 @@
 
 void RR(char configFile[],int q){
    struct node *processesList = getProcessesListFromFile(configFile);
+    printProcessTable(processesList);
    bubbleSort(processesList, 1, false); // Asc Sort List Based On TA (which is on index 1 in DATA array)
-   struct Queue *queue = createQueue();
-   struct node *tmp = processesList;
-   while(tmp){
-      enQueue(queue, tmp);
-      tmp = tmp->next;
-   }
-   tmp = queue->front;
-   while(tmp){
-      printf("%s\t", tmp->data[0]);
-      tmp = tmp->next;
-   }
-   //struct node *tmp = processesList;
-   //sortByTaPreemptive(tmp, 1, 2,q);
-   //tmp = processesList;
-   //displayResult(tmp);
-}  
-
+   struct Queue *queue = createQueueFromLinkedList(processesList);  
+   struct node *tmp=sortByTaPreemptive(queue,q);
+   addIdleNodes(tmp);
+   printGanttChart(tmp, "Round Robin");
+}
 int main(int argc, char *argv[]) {
     int Q;
    if(argc == 1)
