@@ -59,7 +59,7 @@ struct Queue* createQueue();
 void enQueue(struct Queue* q, struct node *element);
 
 /* Function to remove element from given queue q */
-struct node* deQueue(struct Queue* q);
+void deQueue(struct Queue* q);
 
 /* Function to create Queue from LinkedList */
 struct Queue *createQueueFromLinkedList(struct node *head);
@@ -360,7 +360,7 @@ void sortByTwoIndexes(struct node *head, int comparisonIndex1, int comparisonInd
       swapped = false;
       int finish = atoi(head->data[1]) + atoi(head->data[2]);
       struct node *ptr1 = head->next;
-      while(ptr1->next != lptr){
+      while(ptr1 && ptr1->next != lptr){
          int ni1 = atoi(ptr1->next->data[comparisonIndex1]);
          int i2 = atoi(ptr1->data[comparisonIndex2]);
          int ni2 = atoi(ptr1->next->data[comparisonIndex2]);
@@ -419,13 +419,18 @@ void enQueue(struct Queue *q, struct node *element){
       q->front = q->rear = temp;
       return;
    }
+   if(atoi(q->front->data[1]) > atoi(temp->data[1])){
+      temp->next = q->front;
+      q->front = temp;
+      return;
+   }
    if(atoi(q->rear->data[1]) <= atoi(temp->data[1])){
       q->rear->next = temp;
       q->rear = temp;
       return;
    }
    struct node *tmp = q->front->next, *prev = q->front;
-   while(tmp  && tmp->next && (atoi(tmp->data[1]) <= atoi(temp->data[1])) ){
+   while(tmp && (atoi(tmp->data[1]) <= atoi(temp->data[1])) ){
       tmp = tmp->next;
       prev = prev->next;
    }
@@ -434,10 +439,10 @@ void enQueue(struct Queue *q, struct node *element){
 }
  
 // Function to remove element from given queue q
-struct node* deQueue(struct Queue* q){
+void deQueue(struct Queue* q){
    // If queue is empty, return NULL.
    if (q->front == NULL)
-     return q->front;
+      return;
    // Store previous front and move front one node ahead
    struct node* temp = q->front;
    //struct node *ret = q->front;
@@ -447,7 +452,6 @@ struct node* deQueue(struct Queue* q){
    if (q->front == NULL)
       q->rear = NULL;
    free(temp);
-   return (q->front);
 }
 
 void affiche(struct Queue*q){
@@ -483,21 +487,19 @@ struct node *sortByTaPreemptive(struct Queue *queue, int quantum){
    struct node *Res = NULL;
    int finish=atoi(queue->front->data[1]),exec;
    struct node *tmp;
-   struct node *frnt;
    struct node *process = (struct node*)malloc(sizeof(struct node));
    while(queue->front){
-
       process->data[0] = strdup(queue->front->data[0]);
       process->data[1] = strdup(queue->front->data[1]);
       process->data[2] = strdup(queue->front->data[2]);
       process->data[3] = strdup(queue->front->data[3]);
 
-      frnt=deQueue(queue);
+      deQueue(queue);
    
       struct node *Node = (struct node*)malloc(sizeof(struct node));
 
       if(atoi(process->data[2]) <= quantum){
-         Node=newNode(process);
+         Node = newNode(process);
          if (Res == NULL){
             Res=Node;
             tmp=Res;
@@ -517,22 +519,16 @@ struct node *sortByTaPreemptive(struct Queue *queue, int quantum){
             else{
                tmp->next = Node;
                tmp=tmp->next;
-
             }
 
-           
+            int ta = atoi(process->data[1]);
+            int idle = finish < ta ? (ta - finish) : 0;
             exec= atoi(process->data[2]) - quantum;
             sprintf(process->data[2], "%d", exec); 
-            finish += quantum;
+            finish += quantum + idle;
             sprintf(process->data[1], "%d", finish);
-
             enQueue(queue,process);
-            // affiche(queue);
-            // affiche1(Res);
       }
-      
-      queue->front=frnt;
-
   }
   return Res;
 }
