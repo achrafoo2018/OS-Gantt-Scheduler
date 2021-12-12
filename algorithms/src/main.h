@@ -68,8 +68,6 @@ struct Queue *createQueueFromLinkedList(struct node *head);
 struct node* newNode(struct node *dataNode);
 
 
-void affiche1(struct node*res);
-
 void printProcessTable(struct node *head){ 
    printf("\n******************** Processes Table *********************\n\n");
    struct node *tmp = head;

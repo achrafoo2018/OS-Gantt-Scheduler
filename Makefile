@@ -10,7 +10,7 @@ main: main.c
 $(BUILD_DIR)/%: $(SRC_DIR)/%.c $(SRC_DIR)/main.h
 	@mkdir -p $(@D)
 	gcc $(CFLAGS) $< -o $@
-
+	@chmod a+x $@
 clean:
 	rm -rf algorithms/build
 	rm -f main
