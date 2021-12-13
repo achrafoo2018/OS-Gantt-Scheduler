@@ -169,15 +169,19 @@ void addIdleNodes(struct node *head){
       int te = atoi(tmp->data[2]);
       int idle = (ta > finish) ? (ta - finish) : 0;
       if(idle > 0){
+         printf("f = %d\n", finish);
+         printf("id = %d\n", idle);
+         printf("P = %s\n", tmp->data[0]);
          struct node *newNode = (struct node*)malloc(sizeof(struct node));
-         for(int i=0; i<4; i++)
-            newNode->data[i] = (char *)malloc(sizeof(char) * 100);
+         for(int i=0; i < 4; i++)
+            newNode->data[i] = (char *)malloc(sizeof(char) * 255);
          newNode->data[0] = "-";
          sprintf(newNode->data[1], "%d", finish);
          sprintf(newNode->data[2], "%d", idle);
          newNode->data[3] = "0";
          newNode->next = prev->next;
          prev->next = newNode;
+         prev = prev->next;
       }
       finish += te + idle;
       tmp = tmp->next;

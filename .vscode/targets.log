@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Dec 13 21:14:39 2021
+# Make data base, printed on Mon Dec 13 21:35:54 2021
 
 # Variables
 
@@ -23,9 +23,9 @@ DESKTOP_SESSION = ubuntu
 # environment
 XDG_SESSION_CLASS = user
 # environment
- 
 XDG_SESSION_TYPE = x11
 # environment
+ 
 VSCODE_LOG_NATIVE = false
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
@@ -252,7 +252,6 @@ GJS_DEBUG_OUTPUT = stderr
 # default
 .RECIPEPREFIX := 
 # environment
- 
 LC_ADDRESS = ar_TN.UTF-8
 # environment
 LANG = C
@@ -291,7 +290,7 @@ algorithms/build/%: algorithms/src/%.c algorithms/src/main.h
 # Not a target:
 algorithms/src/FIFO.c:
 #  Implicit rule search has been done.
-#  Last modified 2021-12-08 19:22:45.880207546
+#  Last modified 2021-12-13 21:16:13.780344963
 #  File has been updated.
 #  Successfully updated.
 
@@ -326,13 +325,14 @@ main.c:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2021-12-13 21:14:25.355914232
+#  Last modified 2021-12-13 21:34:53.984901784
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 algorithms/src/PRIORITY.c:
 #  Implicit rule search has been done.
+ 
 #  Last modified 2021-12-08 19:22:41.348306475
 #  File has been updated.
 #  Successfully updated.
@@ -340,7 +340,7 @@ algorithms/src/PRIORITY.c:
 algorithms/build/FIFO: algorithms/src/FIFO.c algorithms/src/main.h
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: 'FIFO'
-#  Last modified 2021-12-13 21:11:10.495141018
+#  Last modified 2021-12-13 21:34:50.044939952
 #  File has been updated.
 #  Successfully updated.
 #  recipe to execute (from 'Makefile', line 11):
@@ -351,7 +351,7 @@ algorithms/build/FIFO: algorithms/src/FIFO.c algorithms/src/main.h
 algorithms/build/RR: algorithms/src/RR.c algorithms/src/main.h
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: 'RR'
-#  Last modified 2021-12-13 21:11:10.407140671
+#  Last modified 2021-12-13 21:34:49.960940767
 #  File has been updated.
 #  Successfully updated.
 #  recipe to execute (from 'Makefile', line 11):
@@ -362,15 +362,14 @@ algorithms/build/RR: algorithms/src/RR.c algorithms/src/main.h
 # Not a target:
 algorithms/src/main.h:
 #  Implicit rule search has been done.
-#  Last modified 2021-12-13 21:10:56.091083919
+#  Last modified 2021-12-13 21:21:29.213599376
 #  File has been updated.
 #  Successfully updated.
 
 algorithms/build/PREEMPTIVE_PRIORITY: algorithms/src/PREEMPTIVE_PRIORITY.c algorithms/src/main.h
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: 'PREEMPTIVE_PRIORITY'
- 
-#  Last modified 2021-12-13 21:11:10.267140116
+#  Last modified 2021-12-13 21:34:49.868941663
 #  File has been updated.
 #  Successfully updated.
 #  recipe to execute (from 'Makefile', line 11):
@@ -409,7 +408,7 @@ clean:
 algorithms/build/PRIORITY: algorithms/src/PRIORITY.c algorithms/src/main.h
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: 'PRIORITY'
-#  Last modified 2021-12-13 21:11:09.971138941
+#  Last modified 2021-12-13 21:34:49.616944114
 #  File has been updated.
 #  Successfully updated.
 #  recipe to execute (from 'Makefile', line 11):
@@ -419,7 +418,7 @@ algorithms/build/PRIORITY: algorithms/src/PRIORITY.c algorithms/src/main.h
 
 main: main.c
 #  Implicit rule search has not been done.
-#  Last modified 2021-12-13 21:11:10.611141479
+#  Last modified 2021-12-13 21:34:50.104939369
 #  File has been updated.
 #  Successfully updated.
 #  recipe to execute (from 'Makefile', line 8):
@@ -428,7 +427,7 @@ main: main.c
 algorithms/build/SRT: algorithms/src/SRT.c algorithms/src/main.h
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: 'SRT'
-#  Last modified 2021-12-13 21:11:10.163139702
+#  Last modified 2021-12-13 21:34:49.780942519
 #  File has been updated.
 #  Successfully updated.
 #  recipe to execute (from 'Makefile', line 11):
@@ -439,14 +438,13 @@ algorithms/build/SRT: algorithms/src/SRT.c algorithms/src/main.h
 algorithms/build/SJF: algorithms/src/SJF.c algorithms/src/main.h
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: 'SJF'
-#  Last modified 2021-12-13 21:11:10.05913929
+#  Last modified 2021-12-13 21:34:49.696943336
 #  File has been updated.
 #  Successfully updated.
 #  recipe to execute (from 'Makefile', line 11):
 	@mkdir -p $(@D)
 	gcc $(CFLAGS) $< -o $@
 	@chmod a+x $@
- 
 
 # files hash-table stats:
 # Load=20/1024=2%, Rehash=0, Collisions=0/70=0%
@@ -462,6 +460,6 @@ algorithms/build/SJF: algorithms/src/SJF.c algorithms/src/main.h
 # strcache performance: lookups = 77 / hit rate = 40%
 # hash-table stats:
 # Load=46/8192=1%, Rehash=0, Collisions=2/77=3%
-# Finished Make data base on Mon Dec 13 21:14:39 2021
+# Finished Make data base on Mon Dec 13 21:35:54 2021
 
  
