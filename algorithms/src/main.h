@@ -86,7 +86,7 @@ void printProcessTable(struct node *head){
 
 
 void printGanttChart(struct node *head, char *algorithmName){
-   printf("\n******************** %s Gant Chart ***********************\n\n", algorithmName);
+   printf("\n******************** %s Gantt Chart ***********************\n\n", algorithmName);
    struct node *tmp1, *tmp2, *tmp3, *tmp4;
    tmp1 = tmp2 = tmp3 = tmp4 = head;
    struct winsize terminalSize;
@@ -254,7 +254,7 @@ struct node *getProcessesListFromFile(char *configFile){
    struct node *processesLinkedList = NULL;
    while ((read = getline(&line, &len, fp)) != -1) {
       if(remove_white_spaces(line)[0] == '#'){
-         printf("Commentaire : %s", line);
+         printf("Commentaire : %s\n", line);
          continue;
       }
       else if(remove_white_spaces(line)[0] == '\n')
@@ -272,6 +272,10 @@ struct node *getProcessesListFromFile(char *configFile){
       processesLinkedList = newNode;
    }
    fclose(fp);
+   if(processesLinkedList == NULL){
+      printf("Config file is empty!\n");
+      exit(1);
+   }
    processesLinkedList = inverseLinkedList(processesLinkedList);
    return processesLinkedList;
 }
