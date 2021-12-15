@@ -6,6 +6,7 @@ CFLAGS := -Wall -g
 all: $(SRC_FILES:$(SRC_DIR)/%.c=$(BUILD_DIR)/%) main
 main: main.c
 	gcc $(CFLAGS) main.c -o main
+	@chmod a+x main
 
 $(BUILD_DIR)/%: $(SRC_DIR)/%.c $(SRC_DIR)/main.h
 	@mkdir -p $(@D)

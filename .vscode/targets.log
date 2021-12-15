@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Dec 13 21:35:54 2021
+# Make data base, printed on Wed Dec 15 19:15:51 2021
 
 # Variables
 
@@ -25,7 +25,6 @@ XDG_SESSION_CLASS = user
 # environment
 XDG_SESSION_TYPE = x11
 # environment
- 
 VSCODE_LOG_NATIVE = false
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
@@ -46,7 +45,7 @@ VTE_VERSION = 6003
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
 # environment
-JOURNAL_STREAM = 8:50802
+JOURNAL_STREAM = 8:84744
 # makefile (from 'Makefile', line 4)
 CFLAGS := -Wall -g
 # environment
@@ -72,7 +71,7 @@ VSCODE_VERBOSE_LOGGING = true
 # environment
 _ = /usr/bin/code
 # environment
-MANAGERPID = 21945
+MANAGERPID = 10429
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # environment
@@ -86,7 +85,7 @@ PATH = /home/kenzu/anaconda3/condabin:/home/kenzu/.local/bin:/usr/local/sbin:/us
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/kenzu-X550JX:@/tmp/.ICE-unix/22175,unix/kenzu-X550JX:/tmp/.ICE-unix/22175
+SESSION_MANAGER = local/kenzu-X550JX:@/tmp/.ICE-unix/12401,unix/kenzu-X550JX:/tmp/.ICE-unix/12401
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -96,7 +95,7 @@ VSCODE_LOG_STACK = false
 # environment
 VSCODE_CRASH_REPORTER_START_OPTIONS = {"companyName":"Microsoft","productName":"VSCode","submitURL":"appcenter://code?aid=fba07a4d-84bd-4fc8-a125-9640fc8ce171&uid=bba3088b-e2fb-4312-a784-1c83cbaed426&iid=bba3088b-e2fb-4312-a784-1c83cbaed426&sid=bba3088b-e2fb-4312-a784-1c83cbaed426","uploadToServer":true}
 # environment
-INVOCATION_ID = 877e6bd1693945078538cfe2665279e8
+INVOCATION_ID = 0d62d034de204e89a75fd8a5cb3fddf3
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -118,7 +117,7 @@ PWD = /home/kenzu/OS_Project
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 22132
+SSH_AGENT_PID = 12325
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # makefile (from 'Makefile', line 1)
@@ -166,7 +165,7 @@ GNOME_SHELL_SESSION_MODE = ubuntu
 # makefile (from 'Makefile', line 2)
 BUILD_DIR := algorithms/build
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-2cf84b83-f932-430e-8459-7c234ab3c5f2.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-32ae52a7-4984-468c-ad9b-7e1f554d3781.sock
 # default
 MAKE_VERSION := 4.2.1
 # environment
@@ -208,7 +207,7 @@ GDK_BACKEND = x11
 # environment
 LC_PAPER = ar_TN.UTF-8
 # environment
-LC_IDENTIFICATION = ar_TN.UTF-8
+NO_AT_BRIDGE = 1
 # environment
 QT_ACCESSIBILITY = 1
 # environment
@@ -228,15 +227,13 @@ LC_ALL = C
 # environment
 CONDA_PYTHON_EXE = /home/kenzu/anaconda3/bin/python
 # environment
-GJS_DEBUG_TOPICS = JS ERROR;JS LOG
-# environment
-GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/3cd46d86_eded_4297_83d7_de3519093353
+GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/a3ef4ea1_db08_4d1e_b8cf_0fdf15a54e14
 # automatic
 ^F = $(notdir $^)
 # makefile (from 'Makefile', line 3)
 SRC_FILES := algorithms/src/PRIORITY.c algorithms/src/SJF.c algorithms/src/SRT.c algorithms/src/PREEMPTIVE_PRIORITY.c algorithms/src/RR.c algorithms/src/FIFO.c
 # environment
-GNOME_TERMINAL_SERVICE = :1.114
+GNOME_TERMINAL_SERVICE = :1.94
 # default
 SUFFIXES := 
 # environment
@@ -248,7 +245,7 @@ WINDOWPATH = 2
 # default
 .INCLUDE_DIRS = /usr/include /usr/local/include /usr/include
 # environment
-GJS_DEBUG_OUTPUT = stderr
+LC_IDENTIFICATION = ar_TN.UTF-8
 # default
 .RECIPEPREFIX := 
 # environment
@@ -258,11 +255,11 @@ LANG = C
 # environment
 TERM = xterm-256color
 # environment
-VSCODE_PID = 360525
+VSCODE_PID = 239560
 # environment
 _CE_CONDA = 
 # variable set hash-table stats:
-# Load=125/1024=12%, Rehash=0, Collisions=30/157=19%
+# Load=124/1024=12%, Rehash=0, Collisions=29/156=19%
 
 # Pattern-specific Variable Values
 
@@ -278,7 +275,7 @@ _CE_CONDA =
 # Implicit Rules
 
 algorithms/build/%: algorithms/src/%.c algorithms/src/main.h
-#  recipe to execute (from 'Makefile', line 11):
+#  recipe to execute (from 'Makefile', line 12):
 	@mkdir -p $(@D)
 	gcc $(CFLAGS) $< -o $@
 	@chmod a+x $@
@@ -290,7 +287,8 @@ algorithms/build/%: algorithms/src/%.c algorithms/src/main.h
 # Not a target:
 algorithms/src/FIFO.c:
 #  Implicit rule search has been done.
-#  Last modified 2021-12-13 21:16:13.780344963
+ 
+#  Last modified 2021-12-13 22:39:58.080910561
 #  File has been updated.
 #  Successfully updated.
 
@@ -325,14 +323,13 @@ main.c:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2021-12-13 21:34:53.984901784
+#  Last modified 2021-12-14 12:26:37.287039428
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 algorithms/src/PRIORITY.c:
 #  Implicit rule search has been done.
- 
 #  Last modified 2021-12-08 19:22:41.348306475
 #  File has been updated.
 #  Successfully updated.
@@ -340,10 +337,10 @@ algorithms/src/PRIORITY.c:
 algorithms/build/FIFO: algorithms/src/FIFO.c algorithms/src/main.h
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: 'FIFO'
-#  Last modified 2021-12-13 21:34:50.044939952
+#  Last modified 2021-12-14 12:23:52.842408997
 #  File has been updated.
 #  Successfully updated.
-#  recipe to execute (from 'Makefile', line 11):
+#  recipe to execute (from 'Makefile', line 12):
 	@mkdir -p $(@D)
 	gcc $(CFLAGS) $< -o $@
 	@chmod a+x $@
@@ -351,10 +348,10 @@ algorithms/build/FIFO: algorithms/src/FIFO.c algorithms/src/main.h
 algorithms/build/RR: algorithms/src/RR.c algorithms/src/main.h
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: 'RR'
-#  Last modified 2021-12-13 21:34:49.960940767
+#  Last modified 2021-12-14 12:23:52.762408691
 #  File has been updated.
 #  Successfully updated.
-#  recipe to execute (from 'Makefile', line 11):
+#  recipe to execute (from 'Makefile', line 12):
 	@mkdir -p $(@D)
 	gcc $(CFLAGS) $< -o $@
 	@chmod a+x $@
@@ -362,17 +359,17 @@ algorithms/build/RR: algorithms/src/RR.c algorithms/src/main.h
 # Not a target:
 algorithms/src/main.h:
 #  Implicit rule search has been done.
-#  Last modified 2021-12-13 21:21:29.213599376
+#  Last modified 2021-12-14 12:23:51.574404134
 #  File has been updated.
 #  Successfully updated.
 
 algorithms/build/PREEMPTIVE_PRIORITY: algorithms/src/PREEMPTIVE_PRIORITY.c algorithms/src/main.h
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: 'PREEMPTIVE_PRIORITY'
-#  Last modified 2021-12-13 21:34:49.868941663
+#  Last modified 2021-12-14 12:23:52.682408384
 #  File has been updated.
 #  Successfully updated.
-#  recipe to execute (from 'Makefile', line 11):
+#  recipe to execute (from 'Makefile', line 12):
 	@mkdir -p $(@D)
 	gcc $(CFLAGS) $< -o $@
 	@chmod a+x $@
@@ -380,7 +377,7 @@ algorithms/build/PREEMPTIVE_PRIORITY: algorithms/src/PREEMPTIVE_PRIORITY.c algor
 # Not a target:
 algorithms/src/SRT.c:
 #  Implicit rule search has been done.
-#  Last modified 2021-12-11 20:18:37.236836862
+#  Last modified 2021-12-13 23:06:04.170260173
 #  File has been updated.
 #  Successfully updated.
 
@@ -401,36 +398,37 @@ clean:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 15):
+#  recipe to execute (from 'Makefile', line 16):
 	rm -rf algorithms/build
 	rm -f main
 
 algorithms/build/PRIORITY: algorithms/src/PRIORITY.c algorithms/src/main.h
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: 'PRIORITY'
-#  Last modified 2021-12-13 21:34:49.616944114
+#  Last modified 2021-12-14 12:23:52.434407433
 #  File has been updated.
 #  Successfully updated.
-#  recipe to execute (from 'Makefile', line 11):
+#  recipe to execute (from 'Makefile', line 12):
 	@mkdir -p $(@D)
 	gcc $(CFLAGS) $< -o $@
 	@chmod a+x $@
 
 main: main.c
 #  Implicit rule search has not been done.
-#  Last modified 2021-12-13 21:34:50.104939369
+#  Last modified 2021-12-14 12:19:30.805402779
 #  File has been updated.
 #  Successfully updated.
 #  recipe to execute (from 'Makefile', line 8):
 	gcc $(CFLAGS) main.c -o main
+	@chmod a+x main
 
 algorithms/build/SRT: algorithms/src/SRT.c algorithms/src/main.h
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: 'SRT'
-#  Last modified 2021-12-13 21:34:49.780942519
+#  Last modified 2021-12-14 12:23:52.606408092
 #  File has been updated.
 #  Successfully updated.
-#  recipe to execute (from 'Makefile', line 11):
+#  recipe to execute (from 'Makefile', line 12):
 	@mkdir -p $(@D)
 	gcc $(CFLAGS) $< -o $@
 	@chmod a+x $@
@@ -438,10 +436,10 @@ algorithms/build/SRT: algorithms/src/SRT.c algorithms/src/main.h
 algorithms/build/SJF: algorithms/src/SJF.c algorithms/src/main.h
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: 'SJF'
-#  Last modified 2021-12-13 21:34:49.696943336
+#  Last modified 2021-12-14 12:23:52.514407739
 #  File has been updated.
 #  Successfully updated.
-#  recipe to execute (from 'Makefile', line 11):
+#  recipe to execute (from 'Makefile', line 12):
 	@mkdir -p $(@D)
 	gcc $(CFLAGS) $< -o $@
 	@chmod a+x $@
@@ -460,6 +458,6 @@ algorithms/build/SJF: algorithms/src/SJF.c algorithms/src/main.h
 # strcache performance: lookups = 77 / hit rate = 40%
 # hash-table stats:
 # Load=46/8192=1%, Rehash=0, Collisions=2/77=3%
-# Finished Make data base on Mon Dec 13 21:35:54 2021
+# Finished Make data base on Wed Dec 15 19:15:51 2021
 
  

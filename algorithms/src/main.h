@@ -232,14 +232,15 @@ void swap(struct node *a, struct node *b){
 
 
 char *remove_white_spaces(char *str){
+   char *tmp = strdup(str);
 	int i = 0, j = 0;
-	while (str[i]){
-		if (str[i] != ' ')
-          str[j++] = str[i];
+	while (tmp[i]){
+		if (tmp[i] != ' ')
+          tmp[j++] = tmp[i];
 		i++;
 	}
-	str[j] = '\0';
-	return str;
+	tmp[j] = '\0';
+	return tmp;
 }
 
 struct node *getProcessesListFromFile(char *configFile){

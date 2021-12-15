@@ -1,5 +1,24 @@
-make --dry-run --keep-going --print-directory
+make --dry-run --always-make --keep-going --print-directory
 make: Entering directory '/home/kenzu/OS_Project'
-make: Nothing to be done for 'all'.
+mkdir -p algorithms/build
+gcc -Wall -g algorithms/src/PRIORITY.c -o algorithms/build/PRIORITY
+chmod a+x algorithms/build/PRIORITY
+mkdir -p algorithms/build
+gcc -Wall -g algorithms/src/SJF.c -o algorithms/build/SJF
+chmod a+x algorithms/build/SJF
+mkdir -p algorithms/build
+gcc -Wall -g algorithms/src/SRT.c -o algorithms/build/SRT
+chmod a+x algorithms/build/SRT
+mkdir -p algorithms/build
+gcc -Wall -g algorithms/src/PREEMPTIVE_PRIORITY.c -o algorithms/build/PREEMPTIVE_PRIORITY
+chmod a+x algorithms/build/PREEMPTIVE_PRIORITY
+mkdir -p algorithms/build
+gcc -Wall -g algorithms/src/RR.c -o algorithms/build/RR
+chmod a+x algorithms/build/RR
+mkdir -p algorithms/build
+gcc -Wall -g algorithms/src/FIFO.c -o algorithms/build/FIFO
+chmod a+x algorithms/build/FIFO
+gcc -Wall -g main.c -o main
+chmod a+x main
 make: Leaving directory '/home/kenzu/OS_Project'
  
